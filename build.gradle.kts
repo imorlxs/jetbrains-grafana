@@ -1,9 +1,21 @@
 plugins {
     id("java")
+    id("application")
 }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("internship.Main")
+}
+tasks.register<JavaExec>("generateDashboard") {
+    group = "custom"
+    description = "Runs Main class to generate JSON"
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("internship.Main")
+    args = listOf() // optional arguments
+}
 
 repositories {
     mavenCentral()
