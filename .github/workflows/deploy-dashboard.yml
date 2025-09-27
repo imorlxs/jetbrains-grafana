@@ -1,6 +1,5 @@
 # .github/workflows/gradle.yml
-name: Generate dashboard using Java Gradle
-
+name: Deploy dashboard to my Grafana Cloud instance
 on:
   push:
     branches: [ main ]
