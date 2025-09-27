@@ -1,0 +1,44 @@
+# .github/workflows/gradle.yml
+name: Generate dashboard using Java Graddle
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 17
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper/
+        key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-${{ runner.os }}-
+
+    - name: Build with Gradle
+      run: ./gradlew build
+
+    - name: Run Gradle task that generates JSON
+      run: ./gradlew generateDashboard 
+
+    - name: Upload JSON artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-json
+        path: cpu-usage-generated.json
