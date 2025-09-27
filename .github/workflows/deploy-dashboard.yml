@@ -49,10 +49,10 @@ jobs:
           GRAFANA_STACK_ID: ${{ vars.GRAFANA_STACK_ID }}
           GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
         run: |
-          if [ -f sample-dashboard.json ]; then
-            echo "sample-dashboard.json exists, deploying dashboard."
-            grafanactl resources push dashboards --path ./sample-dashboard.json
+          if [ -f cpu-usage-generated.json ]; then
+            echo "cpu-usage-generated.json exists, deploying dashboard."
+            grafanactl resources push dashboards --path ./cpu-usage-generated.json
           else
-            echo "sample-dashboard.json does not exist."
+            echo "cpu-usage-generated.json does not exist."
             exit 1
           fi
