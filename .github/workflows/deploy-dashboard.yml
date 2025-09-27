@@ -35,25 +35,25 @@ jobs:
         run: ./gradlew build
 
       - name: Download and Extract grafanactl
-          run: |
-            curl -L -o grafanactl-x86_64.tar.gz "https://github.com/grafana/grafanactl/releases/download/${{ vars.GRAFANACTL_VERSION }}/grafanactl_Linux_x86_64.tar.gz"
-            tar -xzf grafanactl-x86_64.tar.gz
-            chmod +x grafanactl
-            sudo mv grafanactl /usr/local/bin/grafanactl
+        run: |
+          curl -L -o grafanactl-x86_64.tar.gz "https://github.com/grafana/grafanactl/releases/download/${{ vars.GRAFANACTL_VERSION }}/grafanactl_Linux_x86_64.tar.gz"
+          tar -xzf grafanactl-x86_64.tar.gz
+          chmod +x grafanactl
+          sudo mv grafanactl /usr/local/bin/grafanactl
 
       - name: Run Gradle task that generates JSON
         run: ./gradlew generateDashboardForGrafanaCTL
 
       - name: Deploy Dashboard with grafanactl
-          env:
-            GRAFANA_SERVER: ${{ vars.GRAFANA_SERVER }}
-            GRAFANA_STACK_ID: ${{ vars.GRAFANA_STACK_ID }}
-            GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
-          run: |
-            if [ -f sample-dashboard.json ]; then
-              echo "sample-dashboard.json exists, deploying dashboard."
-              grafanactl resources push dashboards --path ./sample-dashboard.json
-            else
-              echo "sample-dashboard.json does not exist."
-              exit 1
-            fi
+        env:
+          GRAFANA_SERVER: ${{ vars.GRAFANA_SERVER }}
+          GRAFANA_STACK_ID: ${{ vars.GRAFANA_STACK_ID }}
+          GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
+        run: |
+          if [ -f sample-dashboard.json ]; then
+            echo "sample-dashboard.json exists, deploying dashboard."
+            grafanactl resources push dashboards --path ./sample-dashboard.json
+          else
+            echo "sample-dashboard.json does not exist."
+            exit 1
+          fi
