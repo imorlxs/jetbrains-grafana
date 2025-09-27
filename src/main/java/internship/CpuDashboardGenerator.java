@@ -50,6 +50,7 @@ public class CpuDashboardGenerator {
                         expr("cpu_usage").
                         datasource(PROMETHEUS.toRef()).
                         editorMode(QueryEditorMode.BUILDER).
+                        interval("1").
                         legendFormat("__auto")
                 );
     }
