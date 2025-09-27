@@ -12,7 +12,7 @@ public class CpuDashboardGenerator {
     static final DataSourceConfig PROMETHEUS = new DataSourceConfig("prometheus", "DS_PROMETHEUS_UID");
     private static final String DASHBOARD_TITLE = "CPU Usage";
     private static final String DASHBOARD_UID = "cpu-usage-generated";
-    private static final List<String> DASHBOARD_TAGS = List.of("generated", "cpu", "java");
+    private static final List<String> DASHBOARD_TAGS = List.of("generated", "cpu", "java", "test");
     private static final String REFRESH_INTERVAL = "1m";
     private static final String TIME_FROM = "now-1m";
     private static final String TIME_TO = "now";
