@@ -1,6 +1,7 @@
 package internship;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grafana.foundation.dashboard.Dashboard;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,7 +16,23 @@ public class Main {
         CpuDashboardGenerator generator = new CpuDashboardGenerator();
         try {
             Dashboard dashboard = generator.generateDashboard();
-            String jsonOutput = dashboard.toJSON();
+
+            String jsonOutput;
+
+            // GrafanaCTL requires dashboards to be wrapped in a Kubernetes style wrapper.
+            if (args.length > 0 && args[0].equalsIgnoreCase("--grafanactl")) {
+                DashboardWrapper wrapper = new DashboardWrapper(
+                        "dashboard.grafana.app/v1beta1",
+                        "Dashboard",
+                        new Metadata("my-dashboard"),
+                        dashboard
+                );
+                ObjectMapper mapper = new ObjectMapper();
+                jsonOutput = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(wrapper);
+            }
+            else {
+                jsonOutput = dashboard.toJSON();
+            }
 
             Path outputPath = Paths.get(OUTPUT_FILENAME);
 

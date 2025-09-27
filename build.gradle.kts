@@ -17,6 +17,14 @@ tasks.register<JavaExec>("generateDashboard") {
     args = listOf() // optional arguments
 }
 
+tasks.register<JavaExec>("generateDashboardForGrafanaCTL") {
+    group = "custom"
+    description = "Runs Main class to generate JSON"
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass.set("internship.Main")
+    args = listOf("--grafanactl") // optional arguments
+}
+
 repositories {
     mavenCentral()
 }
