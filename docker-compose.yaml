@@ -23,14 +23,14 @@ services:
     container_name: loki
     command: ["--validation.discover-service-name=[]", "--validation.discover-log-levels=false", "-config.file=/etc/loki/loki.yaml"]
     volumes:
-      - ./loki:/etc/loki/
+      - ./loki:/etc/loki/:Z
     ports:
       - "3100:3100"
   prometheus:
     image: prom/prometheus:v3.2.1
     container_name: prometheus
     volumes:
-      - ./prometheus/:/etc/prometheus/
+      - ./prometheus/:/etc/prometheus/:Z
     command:
       - --web.enable-remote-write-receiver
       - --config.file=/etc/prometheus/prometheus.yml
@@ -40,7 +40,7 @@ services:
     image: prom/alertmanager:v0.28.1
     container_name: alertmanager
     volumes:
-      - ./alertmanager:/etc/alertmanager/
+      - ./alertmanager:/etc/alertmanager/:Z
     ports:
       - 9093:9093
   grafana:
@@ -54,7 +54,7 @@ services:
       - GF_SMTP_HOST=smtp:25
       - GF_SMTP_SKIP_VERIFY=true
     volumes:
-      - ./grafana:/etc/grafana/provisioning/
+      - ./grafana:/etc/grafana/provisioning/:Z
     ports:
       - 3000:3000
 volumes:
