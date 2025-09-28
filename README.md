@@ -1,16 +1,5 @@
-# Demo Alerting in Prometheus and Grafana 
-
-Grafana Alerting is built on the Prometheus Alerting model. This demo project showcases the similarities between Prometheus and Grafana alerting systems, covering topics such as:
-
-- Creating alerts in Prometheus
-- Recreating the same alerts using Grafana
-- Setting up alerts based on Loki logs
-- Exploring alerting components like evaluation groups and notification policies
-- Creating template notifications
-- And more!
-
-This project pairs well with this [Alerting Presentation Template](https://docs.google.com/presentation/d/1XvJnBlNnXUjiS409ABN4NxNkFZoYDmoRKKoJqsvln-g/edit?usp=sharing). Together, they provide an excellent starting point for presenting the Prometheus Alerting model and demonstrating its use in Grafana.
-
+# CPU Usage Demo panel in Grafana using Prometheus and Foundation SDK.
+This repository is meant for completing a task as part of the selection process at JetBrains. Using Foundation SDK, Java and GitHub actions, it generates a JSON containing a simple Grafana dashboard. It also uses the SDK to push that dashboard into my Grafana Cloud instance (with no data though) 
 ## Run the demo environment
 
 This repository includes a [Docker Compose setup](./docker-compose.yaml) that runs Grafana, Prometheus, Prometheus Alertmanager, Loki, and an SMTP server for testing email notifications.
@@ -78,28 +67,8 @@ Once you've built the necessary k6 version, you can pre-populate data by running
 The `testdata` scripts inject Prometheus metric and Loki log data, which can be used to define alert queries and conditions. You can then modify and run the scripts to test the alerts.
 
 
-### Receive webhook notifications
-
-One of the simplest ways to receive alert notifications is by using a Webhook.  You can use [`webhook.site`](https://webhook.site/) to create Webhook URLs and view the incoming messages.
-
-- For Prometheus alertmanager: 
-  
-  Set the Webhook URL to the [alertmanager.yml](./alertmanager/alertmanager.yml) configuration file.
-
-- For Grafana:
-  
-  Create a Webhook contact point and assign it to the notification policy.
-
-### Receive mail notifications
-
-You can also configure notifications to be sent via your Gmail account using an [App Password](https://support.google.com/accounts/answer/185833?hl=en). After creating your App password:
-
-- For Prometheus Alertmanager:
-
-  Replace `your_mail@gmail` with your Gmail address in the [alertmanager.yml](./alertmanager/alertmanager.yml) configuration file.
-
-  Copy `alertmanager/smtp_auth_password.example` to `alertmanager/smtp_auth_password` and set your password.
-
-- For Grafana:
-
-  Copy `environments/smpt.env.example` to `environments/smpt.env` and set the appropriate environment variables values.
+### Generating and downloading the JSON.
+To generate the JSON you have to options:
+  1. Run the Java Main included in the repository. It will generate a `cpu-usage-generated.json` file, that you can directly import to Grafana.
+  2. Run the GitHub action `gradle.yml`. It will compile the proyect, run it, generate the JSON and uploading it as an artifact. You can download it going to the specific run of that action.
+  3. Using `deploy-dashboard.yml`, and setting the secret `GRAFANA_TOKEN` and the variables `GRAFANACTL_VERSION`, `GRAFANA_SERVER` and `GRAFANA_STACK_ID`, you can use the observability-as-code approach and upload it directly using `grafanactl`
